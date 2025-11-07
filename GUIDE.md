@@ -223,6 +223,31 @@ You'll need a GitHub Personal Access Token:
 2. Review matching logic in logs
 3. Verify Finance file has correct data
 
+### Profile Matching Warnings
+
+Sometimes profiles are skipped with warnings. Common reasons:
+
+**1. Name Mismatch**
+- **Problem**: Folder name doesn't match Finance file name exactly
+- **Example**: Folder `Safonova Elleonora` vs Finance `Safonova Eleonora`
+- **Solution**: Rename folder to match Finance file exactly
+
+**2. Employee Not in Finance File**
+- **Problem**: Profile exists but employee not listed in Finance file
+- **Example**: Employees in `Left` folder
+- **Solution**: This is expected - inactive employees won't sync
+
+**3. Character Encoding Issues**
+- **Problem**: Special characters in names don't match
+- **Example**: `Azanova Darya` vs `Azanova Darʼya` (special apostrophe)
+- **Solution**: Rename folder to match Finance file exactly (including special characters)
+
+**How to Fix Name Mismatches:**
+1. Check Finance file for exact name spelling
+2. Rename employee folder to match exactly
+3. Rename profile file if needed
+4. Next sync will find and update the profile
+
 ---
 
 ## Monitoring & Usage
