@@ -125,7 +125,7 @@ Uploads modified files back to Dropbox
 Files are already in the `github-version/` folder. Push them:
 
 ```bash
-cd "/Users/nikolay/Library/CloudStorage/Dropbox/Nov25/.automation/github-version"
+cd "/Users/nikolay/Library/CloudStorage/Dropbox/automations/employee-profile-sync"
 git push -u origin main
 ```
 
