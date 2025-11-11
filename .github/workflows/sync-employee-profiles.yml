@@ -1,51 +1,71 @@
 name: Employee Profile Sync
 
 on:
-  # Scheduled run - Daily at 8:00 AM UTC
   schedule:
+    # Run daily at 8:00 AM UTC
     - cron: '0 8 * * *'
-  
-  # Allow manual trigger via GitHub UI
-  workflow_dispatch:
+  workflow_dispatch: # Allow manual trigger
 
 jobs:
-  sync-profiles:
+  sync:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-    
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-        cache: 'pip'
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    
-    - name: Run employee profile sync
-      env:
-        DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
-      run: |
-        python sync_employee_profiles.py
-    
-    - name: Upload sync logs
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: sync-logs-${{ github.run_number }}
-        path: |
-          sync.log
-          last_sync.json
-        retention-days: 30
-    
-    - name: Notify on failure
-      if: failure()
-      run: |
-        echo "❌ Sync failed! Check the logs for details."
-        exit 1
-
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      
+      - name: Debug - Check secrets availability
+        run: |
+          echo "Checking if secrets are available in workflow..."
+          if [ -z "${{ secrets.DROPBOX_ACCESS_TOKEN }}" ]; then
+            echo "❌ DROPBOX_ACCESS_TOKEN: Not set"
+          else
+            echo "✓ DROPBOX_ACCESS_TOKEN: Set"
+          fi
+          if [ -z "${{ secrets.DROPBOX_APP_KEY }}" ]; then
+            echo "❌ DROPBOX_APP_KEY: Not set"
+          else
+            echo "✓ DROPBOX_APP_KEY: Set"
+          fi
+          if [ -z "${{ secrets.DROPBOX_APP_SECRET }}" ]; then
+            echo "❌ DROPBOX_APP_SECRET: Not set"
+          else
+            echo "✓ DROPBOX_APP_SECRET: Set"
+          fi
+          if [ -z "${{ secrets.DROPBOX_REFRESH_TOKEN }}" ]; then
+            echo "❌ DROPBOX_REFRESH_TOKEN: Not set"
+          else
+            echo "✓ DROPBOX_REFRESH_TOKEN: Set"
+          fi
+      
+      - name: Run employee profile sync
+        env:
+          DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+          DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
+          DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
+          DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
+        run: |
+          python sync_employee_profiles.py
+      
+      - name: Upload sync artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sync-results
+          path: |
+            last_sync.json
+          retention-days: 30
+      
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Sync failed! Check the logs for details."
