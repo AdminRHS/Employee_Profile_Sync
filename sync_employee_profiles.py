@@ -710,6 +710,15 @@ def main():
     app_key = args.app_key or os.environ.get('DROPBOX_APP_KEY')
     app_secret = args.app_secret or os.environ.get('DROPBOX_APP_SECRET')
     refresh_token = args.refresh_token or os.environ.get('DROPBOX_REFRESH_TOKEN')
+    
+    # Debug: Log which environment variables are present (without exposing values)
+    print("=" * 80)
+    print("Environment Variables Check:")
+    print(f"  DROPBOX_ACCESS_TOKEN: {'✓ Set' if os.environ.get('DROPBOX_ACCESS_TOKEN') else '✗ Not set'}")
+    print(f"  DROPBOX_APP_KEY: {'✓ Set' if os.environ.get('DROPBOX_APP_KEY') else '✗ Not set'}")
+    print(f"  DROPBOX_APP_SECRET: {'✓ Set' if os.environ.get('DROPBOX_APP_SECRET') else '✗ Not set'}")
+    print(f"  DROPBOX_REFRESH_TOKEN: {'✓ Set' if os.environ.get('DROPBOX_REFRESH_TOKEN') else '✗ Not set'}")
+    print("=" * 80)
 
     syncer = EmployeeProfileSyncDropbox(
         access_token, 
