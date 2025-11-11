@@ -387,10 +387,8 @@ Not specified
         """Update a single field in profile content"""
         if field_name == "ID":
             pattern = r'(\*\*ID:\*\*\s+)([^\n]+)'
-            replacement = f'\\1{new_value}'
         elif field_name in ["Rate", "Status", "Profession"]:
             pattern = f'(- \\*\\*{field_name}:\\*\\*\\s+)([^\n]+)'
-            replacement = f'\\1{new_value}'
         else:
             return content, False
 
@@ -398,7 +396,8 @@ Not specified
         if match:
             current_value = match.group(2).strip()
             if current_value != new_value:
-                updated_content = re.sub(pattern, replacement, content)
+                # Use lambda to avoid regex backreference issues with new_value
+                updated_content = re.sub(pattern, lambda m: m.group(1) + new_value, content)
                 return updated_content, True
 
         return content, False
