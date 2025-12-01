@@ -174,7 +174,7 @@ class EmployeeProfileSyncDropbox:
 
     def parse_finance_file(self) -> Dict[str, Dict]:
         """Parse the Finance Public markdown table from Dropbox"""
-        finance_path = "/Finance Public/November 2025 - Employees_Public.md"
+        finance_path = "/Finance Public/Employees_Public.md"
 
         self.log(f"Reading Finance file from Dropbox: {finance_path}")
 
@@ -731,3 +731,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
