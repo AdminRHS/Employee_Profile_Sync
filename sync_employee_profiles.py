@@ -3,7 +3,7 @@
 Employee Profile Sync Automation - GitHub Actions Version
 Syncs employee profiles from Finance Public data to department profile files via Dropbox API.
 
-Source: /Finance Public/November 2025 - Employees_Public.md
+Source: /Finance Public/Employees_Public.md
 Targets: /Nov25/[Department]/[Employee Name]/Profile*.md
 
 Synced Fields: ID, Rate, Status, Profession
@@ -731,4 +731,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
